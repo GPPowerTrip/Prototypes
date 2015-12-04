@@ -1,12 +1,16 @@
 # Proxy attack
 How to run?
 
-Run SOCKS.java\n
+Run SOCKS.java
+
 Run Client.java <ip> <port> <mode>
 
 IP: localhost by default
+
 porta: 1080 by default
+
 mode: CONNECT_MODE or UDP_MODE
+
 
 Note: UDP_MODE permite o envio de pacotes de UDP para o proxy server, mas contém algumas lacunas. Este projeto que serviu de base para esta implementação tem muitos mais extras que mais tarde podemos ver se são relevantes ou não.
 
