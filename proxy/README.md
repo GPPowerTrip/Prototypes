@@ -1,7 +1,7 @@
 # Proxy attack
 How to run?
 
-Run SOCKS.java
+Run SOCKS.java\n
 Run Client.java <ip> <port> <mode>
 
 IP: localhost by default
