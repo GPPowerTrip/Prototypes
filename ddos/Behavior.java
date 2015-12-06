@@ -2,29 +2,26 @@ package brain;
 
 class Behavior {
 
+    int Timing = 200000;
     String ip;
     int scannernumbers = 64;
-    int maxports = 20;
+    int maxports = 10;
     int Timeout = 100;
-    int[] ports={7,13,37,51,63,120,123,153,16,162,434,2,3,5,9,11,27,29,31,53};
+    int[] ports = {53, 7, 13, 37, 51, 63, 120, 123, 153, 16, 162, 434, 2, 3, 5, 9, 11, 27, 29, 31};
+    Ping threadPing;
 
     public Behavior(String IP) {
         this.ip = IP;
     }
 
     public void ping() {
-        Ping threadPing = new Ping(this.ip, 6000);
+        threadPing = new Ping(this.ip, Timing);
         threadPing.start();
-        try {
-            threadPing.join();
-        } catch (InterruptedException ex) {
-            System.out.println("Shit on Thread");
-        }
     }
 
     public synchronized void Annoy() {
         try {
-            int port, i, j = 0, ended = 0;
+            int port, i, j = maxports - 1, ended = 0;
             boolean begin = true;
             int space = 65536 / scannernumbers;
             int[] init = new int[scannernumbers];
@@ -39,15 +36,16 @@ class Behavior {
                 threadArray[i] = new Port_Scan(ip, init[i], end[i], Timeout);
                 threadArray[i].start();
             }
-            while (ended < scannernumbers && j < maxports) {
+            while (ended < scannernumbers && j > -1) {
                 for (i = 0; i < scannernumbers; i++) {
                     if (threadArray[i].getState() == Thread.State.TERMINATED) {
                         port = threadArray[i].getopen();
-                        if (port != -1 && j < maxports) {
+                        System.out.println("Port: "+port);
+                        if (port != -1 && j > -1) {
                             ports[j] = port;
                             threadArray[i] = new Port_Scan(ip, port + 1, end[i], Timeout);
                             threadArray[i].start();
-                            j++;
+                            j--;
                         } else {
                             ended++;
                         }
@@ -57,15 +55,14 @@ class Behavior {
             for (i = 0; i < scannernumbers; i++) {
                 threadArray[i].join();
             }
-
             for (i = 0; i < maxports; i++) {
-                AnnoyingThreads[j] = new Be_Annoying(ip, ports[i], 6000);
+                AnnoyingThreads[i] = new Be_Annoying(ip, ports[i], Timing);
                 AnnoyingThreads[i].start();
             }
             for (i = 0; i < maxports; i++) {
                 AnnoyingThreads[i].join();
             }
-
+            threadPing.join();
         } catch (InterruptedException ex) {
             System.err.println("GoodBye");
         }

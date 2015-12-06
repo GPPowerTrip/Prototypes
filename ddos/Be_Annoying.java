@@ -35,7 +35,6 @@ public class Be_Annoying extends Thread {
                 socket.send(new DatagramPacket(data, data.length));
                 System.out.println("Thread " + threadId + " being annoying in port:" + Port + " from ip:" + Ip + " for: " + totalTime);
                 toFinish = (System.currentTimeMillis() - startTime >= totalTime);
-
             }
             socket.close();
         } catch (SocketException ex) {

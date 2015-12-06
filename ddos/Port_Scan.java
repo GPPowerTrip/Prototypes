@@ -45,14 +45,14 @@ public class Port_Scan extends Thread {
         try {
             socket = new DatagramSocket();
             socket.setSoTimeout(timeOut);
-            socket.setTrafficClass(0x02 | 0x04 | 0x08 | 0x10);
+            socket.setTrafficClass(0x04 | 0x10);
             socket.connect(new InetSocketAddress(host, port));
             socket.send(new DatagramPacket(data, data.length));
             while (true) {
-                byte[] receive = new byte[4096];
-                DatagramPacket response = new DatagramPacket(receive, 4096);
+                byte[] receive = new byte[2048];
+                DatagramPacket response = new DatagramPacket(receive, 2048);
                 socket.receive(response);
-                if (response != null && response.getData() != null) {
+                if (response != null || response.getData() != null) {
                     flag = true;
                     System.out.println(threadId +" "+port);
                     break;
