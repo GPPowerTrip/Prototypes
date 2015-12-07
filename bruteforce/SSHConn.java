@@ -1,6 +1,7 @@
 /**
  * Created by ricar on 24/11/2015.
  */
+import com.jcraft.jsch.*;
 
 public class SSHConn {
     private Session session = null;
